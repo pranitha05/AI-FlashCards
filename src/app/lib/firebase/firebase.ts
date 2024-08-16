@@ -1,21 +1,32 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { z } from "zod";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const env = z.object({
+  apiKey: z.string(),
+  authDomain: z.string(),
+  appId: z.string(),
+  messagingSenderId: z.string(),
+  projectId: z.string(),
+  storageBucket: z.string()
+})
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBTbBHH7PEm8Dp6bm7NGxuXfbBCatsHXPw",
-  authDomain: "ai-flashcard-51756.firebaseapp.com",
-  projectId: "ai-flashcard-51756",
-  storageBucket: "ai-flashcard-51756.appspot.com",
-  messagingSenderId: "1001213127561",
-  appId: "1:1001213127561:web:7813ad11a5fc03ccbf8f58",
-  measurementId: "G-8S395WNDH5"
+  apiKey: process.env.apiKey,
+  authDomain: process.env.authDomain,
+  projectId: process.env.projectId,
+  storageBucket: process.env.storageBucket,
+  messagingSenderId: process.env.messagingSenderId,
+  appId: process.env.appId,
+  measurementId: process.env.measurementId
 };
 
+
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(env.parse(firebaseConfig));
 export const firebase = getFirestore(app);

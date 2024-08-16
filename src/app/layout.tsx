@@ -5,15 +5,11 @@ import {
   ClerkProvider,
   SignedIn,
   SignedOut,
-  useSession,
 } from "@clerk/nextjs";
 // Import the LandingPage component
 import LandingPage from "./landingPage";
 
 import Header from "./components/Header";
-
-import Header from "./compoents/Header";
-
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,10 +31,7 @@ export default function RootLayout({
         >
           <Header />
 
-          <main className="min-h-screen flex flex-col items-center justify-center">
-
-          <main>
- 
+          <main className="min-h-screen flex flex-col items-center justify-center"> 
             <SignedOut>
               <LandingPage />
             </SignedOut>

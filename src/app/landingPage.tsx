@@ -2,9 +2,7 @@ import Image from 'next/image';
 
 export default function Page() {
   return (
-
     <div className="bg-[url('/img/flashcardlogo.png')] relative h-screen w-full overflow-hidden bg-cover bg-center">
-
       {/* Center Content */}
       <div className="flex flex-col items-center justify-center h-full text-center">
         <h1 className="text-2xl text-white font-bold font-cocoGothic mb-4">
@@ -22,11 +20,14 @@ export default function Page() {
           CREATE FLASHCARDS
         </a>
       </div>
-    <main className="min-h-screen flex flex-col items-center justify-center p-4">
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-200 to-white dark:from-black dark:to-gray-900">
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Welcome to Snap Learn AI</h1>
-      <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">A platform to learn, grow and create flashcard!</p>  
+
+      {/* Main Content */}
+      <main className="min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-200 to-white dark:from-black dark:to-gray-900">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Welcome to Snap Learn AI</h1>
+          <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">A platform to learn, grow and create flashcards!</p>
+        </div>
+      </main>
     </div>
-    </main>
   );
 }

@@ -16,14 +16,14 @@ export default function Header() {
       <div className="flex items-center space-x-4">
 
         <SignedOut>
-          <div className="px-4 py-2 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-600 hover:to-blue-800 transition">
+          <div className="px-4 py-2 bg-gradient-to-r from-purple-700 to-blue-700 text-white rounded-lg hover:from-purple-600 hover:to-blue-800 transition">
             <SignInButton mode="modal">Sign In</SignInButton>
           </div>
         </SignedOut>
 
         <SignedIn>
 
-        <div className="px-4 py-2 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-600 hover:to-blue-800 transition">
+        <div className="px-4 py-2 bg-gradient-to-r from-purple-700 to-blue-700 text-white rounded-lg hover:from-purple-600 hover:to-blue-800 transition">
             <UserButton showName />
           </div>
           

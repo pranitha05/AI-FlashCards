@@ -14,7 +14,7 @@ import Header from "./components/Header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  
+
   title: "Snap Learn AI",
   description: "A platform to learn and grow.",
 
@@ -39,6 +39,7 @@ export default function RootLayout({
           <main>
 
             <SignedOut>
+              
               <LandingPage />
 
             </SignedOut>

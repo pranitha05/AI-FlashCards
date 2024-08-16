@@ -1,10 +1,10 @@
-import { SignUp } from '@clerk/nextjs';
+import Image from "next/image";
+import { SignUp } from "@clerk/nextjs";
 
-export default function Page() {
+export default function Home() {
   return (
-    <div className='flex items-center justify-center flex-col gap-10'>
-      <h1 className='text-4xl font-bold mt-20'>This is sign up page</h1>
-      <SignUp />
+    <div>
+      <h1 className="text-4xl font-bold text-white-800">This is the home page</h1>
     </div>
   );
 }

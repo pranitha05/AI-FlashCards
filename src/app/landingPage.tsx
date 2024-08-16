@@ -1,33 +1,67 @@
-import Image from 'next/image';
 
-export default function Page() {
+"use client"
+
+import { useEffect, useState } from 'react';
+
+const Page: React.FC = () => {
+  const [isClient, setIsClient] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
-    <div className="bg-[url('/img/flashcardlogo.png')] relative h-screen w-full overflow-hidden bg-cover bg-center">
-      {/* Center Content */}
-      <div className="flex flex-col items-center justify-center h-full text-center">
-        <h1 className="text-2xl text-white font-bold font-cocoGothic mb-4">
-          WELCOME TO
-        </h1>
-        <h2 className="text-[106px] text-white font-bold font-catchyMager mb-4">
-          SNAP LEARN AI
-        </h2>
-        <h3 className="text-[36px] text-white font-normal font-catchyMager mb-8">
-          AI FLASHCARD MAKER
-        </h3>
+    <main className="relative bg-[url('/img/flashcardlogo.png')] flex w-full flex-col justify-center items-center h-screen">
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black opacity-55"></div>
 
-        {/* Create Flashcards Button */}
-        <a href="/login" className="px-8 py-3 border border-solid border-white rounded bg-white text-[#df608f] text-[14px] font-poppins">
-          CREATE FLASHCARDS
-        </a>
-      </div>
-
-      {/* Main Content */}
-      <main className="min-h-screen flex flex-col items-center justify-center p-4">
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-200 to-white dark:from-black dark:to-gray-900">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Welcome to Snap Learn AI</h1>
-          <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">A platform to learn, grow and create flashcards!</p>
+      <div className="relative flex justify-center flex-col cursor-default z-10">
+        
+        {/* "Welcome to" */}
+        <div className="relative uppercase tracking-widest text-2xl bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent font-bold mb-4 shadow-lg flex items-center">
+          <span className="mr-4">Welcome to</span>
+          <div className="flex space-x-5">
+            <svg className="text-yellow-400" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" fill="currentColor"/>
+            </svg>
+            <svg className="text-yellow-500" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" fill="currentColor"/>
+            </svg>
+            <svg className="text-yellow-600" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" fill="currentColor"/>
+            </svg>
+          </div>
         </div>
-      </main>
-    </div>
+        
+        {/* "SNAP LEARN AI" */}
+        <div className="text-[5rem] md:text-[6rem] bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent font-bold uppercase mb-4 shadow-lg">
+          SNAP LEARN-AI
+        </div>
+
+        {/* "AI FLASHCARD MAKER" */}
+        <p className="relative uppercase tracking-widest text-2xl bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent font-bold mb-8 shadow-lg text-right w-full flex items-center justify-end">
+          {isClient && (
+            <div className="flex space-x-5 mr-4">
+              <svg className="text-purple-400" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="4" fill="currentColor"/>
+              </svg>
+              <svg className="text-purple-500" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="4" fill="currentColor"/>
+              </svg>
+              <svg className="text-purple-600" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="4" fill="currentColor"/>
+              </svg>
+            </div>
+          )}
+          
+          <span>
+            AI FLASH-CARD MAKER
+          </span>
+        </p>
+
+      </div>
+    </main>
   );
-}
+};
+
+export default Page;

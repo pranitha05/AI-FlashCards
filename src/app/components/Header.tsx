@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    ClerkProvider,
     SignedIn,
     SignedOut,
     SignInButton,
@@ -9,7 +8,7 @@ import {
 
 export default function Header() {
   return (
-    <header className="p-4 bg-gray-100 dark:bg-gray-800 shadow-md">
+    <header className="p-4 bg-transparent">
     <div className="flex justify-between items-center max-w-7xl mx-auto">
       <h1 className="text-2xl font-bold">Snap Learn</h1>
       <div>

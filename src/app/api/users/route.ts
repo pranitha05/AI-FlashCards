@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUser } from "../../lib/firebase/utils/functions";
+import { createUser, getUser } from "../../lib/firebase/utils/functions";
 import z from "zod";
 
-export async function POST(request: NextRequest, response: NextResponse) {
-  const { error, data } = z
-    .object({ userId: z.string() })
-    .safeParse(await request.json());
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const userId = searchParams.get("userId");
+
+  const schema = z.string();
+  const { error, data } = schema.safeParse(userId);
+
   if (error) return NextResponse.json({ data: error, status: 403 });
-  const user = await getUser(data.userId);
-  if (!user) return NextResponse.json({ data: "No user found", status: 404 });
+  let user = await getUser(data);
+  if (!user) user = await createUser(data, {})
   return NextResponse.json({ data: user, status: 200 });
 }

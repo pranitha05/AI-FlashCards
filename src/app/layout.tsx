@@ -27,11 +27,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${inter.className} bg-gradient-to-b from-gray-200 to-white dark:from-black dark:to-gray-900 text-gray-900 dark:text-white`}
+          className={`${inter.className}`}
         >
           <Header />
-
-          <main className="min-h-screen flex flex-col items-center justify-center"> 
+          <main className="min-h-screen"> 
             <SignedOut>
               <LandingPage />
             </SignedOut>

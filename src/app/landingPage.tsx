@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useEffect, useState } from 'react';
@@ -58,26 +57,15 @@ const Page: React.FC = () => {
           <span>
             AI FLASH-CARD MAKER
           </span>
-        </p>
-
-        
+        </p> 
         {/* Buttons */}
-
-
-        <div className="flex justify-center items-center">
-               
+        <div className="flex justify-center items-center">       
           {/* <a href="#" className="px-4 py-2 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-600 hover:to-blue-800 transition">
             Pricing </a> */}
-
           <div className="px-4 py-2 bg-gradient-to-r from-purple-700 to-blue-700 text-white rounded-lg hover:from-purple-600 hover:to-blue-800 transition">
-
-            <SignInButton mode="modal">Get Started</SignInButton>
-            
+            <SignInButton mode="modal">Get Started</SignInButton>  
           </div>
         </div>
-
-
-
       </div>
     </main>
   );

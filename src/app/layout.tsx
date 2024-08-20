@@ -14,47 +14,31 @@ import Header from "./components/Header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-
-  title: "Snap Learn AI",
+  title: "Snap Learn",
   description: "A platform to learn and grow.",
-
 };
 
 export default function RootLayout({
   children,
-
 }: Readonly<{
-
   children: React.ReactNode;
 }>) {
   return (
     <ClerkProvider>
       <html lang="en">
-
         <body
-          className={`${inter.className} bg-gradient-to-b from-gray-200 to-white dark:from-black dark:to-gray-900 text-gray-900 dark:text-white`}
+          className={`${inter.className}`}
         >
           <Header />
-
-          <main>
-
+          <main className="min-h-screen"> 
             <SignedOut>
-              
               <LandingPage />
-
             </SignedOut>
-
-            <SignedIn>
-              
-              {children}
-              
-            </SignedIn>
-
-
+            <SignedIn>{children}</SignedIn>
           </main>
         </body>
-
       </html>
     </ClerkProvider>
   );
 }
+

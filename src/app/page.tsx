@@ -1,51 +1,148 @@
-import React from 'react';
-import Image from 'next/image';
+"use client";
+import { RedirectToSignIn, useSession } from "@clerk/nextjs";
+import { useState } from "react";
+import Model from "./components/Model";
 
-export default function NewPage() {
+type Flashcard = {
+  category: string;
+  content: {
+    question: string;
+    answer: string;
+  }[];
+}[];
+
+type FlashcardRaw = {
+  category: string;
+  content: {
+    question: string;
+    answer: string;
+  };
+};
+
+const createFlashcard = async (data: FlashcardRaw, userId: string) => {
+  const ctx = await fetch("/api/flashcard", {
+    method: "POST",
+    body: JSON.stringify({
+      userId,
+      data: { category: data.category, content: [data.content] },
+    }),
+  });
+  const response = await ctx.json();
+  return response;
+};
+
+const defaultFlashCardData: Flashcard = [];
+export default function Page() {
+  const { session, isSignedIn } = useSession();
+  const [isModel, setisModel] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [content, setContent] = useState<{ category: string; notes: string }>({
+    category: "",
+    notes: "",
+  });
+
+  const [data, setData] = useState<Flashcard>(defaultFlashCardData);
+  if (!isSignedIn) return <RedirectToSignIn />;
+
+  async function handleCategory(category: string) {
+    setContent((prev) => ({ ...prev, category }));
+  }
+
+  function handleNote(notes: string) {
+    setContent((prev) => ({ ...prev, notes }));
+  }
+
+  async function makeRequest() {
+    const ctx = await fetch("/api/ai", {
+      method: "POST",
+      body: JSON.stringify({ category: content.category, data: content.notes }),
+    });
+    const res = await ctx.json();
+    if (res.statusCode === 200) {
+      setData((prev) => [
+        ...prev,
+        { category: content.category, content: JSON.parse(res.message) },
+      ]);
+    }
+   setLoading(false)
+   handleClose()
+   
+  }
+
+  const handleClose = () => {
+    setisModel(false)
+  };
+  const handleLoading = () => setLoading((prev) => !prev)
+
+  async function handleButtonSubmit() {
+    setisModel((prev) => !prev);
+  }
+
   return (
-    <div className="relative h-screen w-full bg-blue-500" style={{ backgroundColor: '#68c7ff' }}>
-      {/* Top Right Corner - Navigation */}
-      <div className="absolute top-4 right-4 flex space-x-8">
-        <a href="/flashcards" className="text-[#df608f] text-[14px] font-poppins">
-          MY FLASHCARDS
-        </a>
-        <a href="/profile" className="text-[#df608f] text-[14px] font-poppins">
-          MY PROFILE
-        </a>
-      </div>
-
-      {/* Page Content */}
-      <div className="flex h-full">
-        {/* Left Half - GIF Animation */}
-        <div className="w-1/2 flex items-center justify-center">
-          <Image
-            src="/img/dashboardbg.png"
-            alt="Animation"
-            width={500}
-            height={500}
-            className="object-contain"
+    <main
+      className={`bg-light-blue ${
+        data.length > 0 ? "h-full" : "h-full"
+      }  relative z-10`}
+    >
+      <div className="bg-white">
+        {isModel && (
+          <Model
+            isOpen={isModel}
+            handleCategory={handleCategory}
+            handleNote={handleNote}
+            handleClose={handleClose}
+            handleLoading={handleLoading}
+            loading={loading}
           />
-        </div>
-
-        {/* Right Half - Upload Section */}
-        <div className="w-1/2 flex flex-col items-center justify-center text-center">
-          <h1 className="text-[#004b84] text-[64px] font-poppins mb-8">
-            Upload your notes
+        )}
+        <div className="p-20 md:p-16 flex justify-between md:flex-row flex-col items-center gap-4 ">
+          <h1 className="text-2xl text-black font-bold uppercase py-1">
+            Welcome back {session.user.fullName}
           </h1>
-
-          {/* Upload Button */}
-          <div className="mb-8">
-            <button className="px-8 py-3 border border-solid border-white rounded bg-white text-[#df608f] text-[14px] font-poppins">
-              Upload
-            </button>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="w-3/4 bg-gray-300 rounded-full h-4">
-            <div className="bg-[#df608f] h-4 rounded-full" style={{ width: '50%' }}></div>
-          </div>
+          <button
+            onClick={handleButtonSubmit}
+            className="text-white font-bold text-xl bg-black p-2 rounded md:w-fit w-full"
+          >
+            Create Flashcard
+          </button>
         </div>
       </div>
-    </div>
-  )
+      <div>
+        {data.length > 0 ? (
+          data.map((data) => {
+            return (
+              <div
+                key={data.category}
+                className="flex justify-center my-10 flex-col"
+              >
+                <h1 className="text-2xl font-bold mx-10 uppercase">
+                  {data.category}
+                </h1>
+                <div className="grid md:grid-cols-4  gap-4  mx-10 my-10">
+                  {data.content.length > 0 &&
+                    data.content.map((r) => {
+                      return (
+                        <div
+                          key={r.question}
+                          className="relative group rounded bg-black h-40 justify-center flex items-center"
+                        >
+                          <span className="text-white">{r.question}</span>
+                          <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <span className="text-white">{r.answer}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <div className="h-screen flex justify-center items-center">
+            No flashcard
+          </div>
+        )}
+      </div>
+    </main>
+  );
 }

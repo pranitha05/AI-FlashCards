@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     userId: z.string(),
     data: z.object({
       category: z.string(),
-      content: z.array(z.object({ answer: z.string(), question: z.string() })),
+      content: z.object({ answer: z.string(), question: z.string() }),
     }),
   });
   const { error, data } = parser.safeParse(ctx);

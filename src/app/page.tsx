@@ -1,7 +1,8 @@
 "use client";
 import { RedirectToSignIn, useSession } from "@clerk/nextjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Model from "./components/Model";
+import { createBatchNotes, getBatchNotes } from "./lib/firebase/utils/functions";
 
 type Flashcard = {
   category: string;
@@ -16,7 +17,7 @@ type FlashcardRaw = {
   content: {
     question: string;
     answer: string;
-  };
+  }[];
 };
 
 const createFlashcard = async (data: FlashcardRaw, userId: string) => {
@@ -24,7 +25,7 @@ const createFlashcard = async (data: FlashcardRaw, userId: string) => {
     method: "POST",
     body: JSON.stringify({
       userId,
-      data: { category: data.category, content: [data.content] },
+      data: { category: data.category, content: data.content },
     }),
   });
   const response = await ctx.json();
@@ -36,46 +37,36 @@ export default function Page() {
   const { session, isSignedIn } = useSession();
   const [isModel, setisModel] = useState(false);
   const [loading, setLoading] = useState(false)
-  const [content, setContent] = useState<{ category: string; notes: string }>({
-    category: "",
-    notes: "",
-  });
 
   const [data, setData] = useState<Flashcard>(defaultFlashCardData);
+
   if (!isSignedIn) return <RedirectToSignIn />;
 
-  async function handleCategory(category: string) {
-    setContent((prev) => ({ ...prev, category }));
-  }
 
-  function handleNote(notes: string) {
-    setContent((prev) => ({ ...prev, notes }));
-  }
-
-  async function makeRequest() {
+  async function makeAIRequest(notes: string) {
     const ctx = await fetch("/api/ai", {
       method: "POST",
-      body: JSON.stringify({ category: content.category, data: content.notes }),
+      body: JSON.stringify({ data: notes }),
     });
     const res = await ctx.json();
+    const response = (JSON.parse(res.message))
     if (res.statusCode === 200) {
       setData((prev) => [
         ...prev,
-        { category: content.category, content: JSON.parse(res.message) },
+        { category: response.category, content: response.flashcards },
       ]);
+      await createBatchNotes(response, session!.user.id)
+      handleClose()
     }
-   setLoading(false)
-   handleClose()
-   
   }
 
-  const handleClose = () => {
-    setisModel(false)
-  };
+  const handleClose = () => setisModel(false)
+
   const handleLoading = () => setLoading((prev) => !prev)
 
   async function handleButtonSubmit() {
     setisModel((prev) => !prev);
+    setLoading(false)
   }
 
   return (
@@ -88,8 +79,8 @@ export default function Page() {
         {isModel && (
           <Model
             isOpen={isModel}
-            handleCategory={handleCategory}
-            handleNote={handleNote}
+
+            makeRequest={makeAIRequest}
             handleClose={handleClose}
             handleLoading={handleLoading}
             loading={loading}

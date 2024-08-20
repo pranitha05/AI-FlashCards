@@ -3,27 +3,23 @@ import React, { useState } from "react";
 
 export default function Model({
   isOpen,
-  handleCategory,
   handleClose,
   loading,
-  handleNote,
-  handleLoading
+  handleLoading,
+  makeRequest,
 }: {
   isOpen: boolean;
   handleLoading: () => void;
   loading: boolean,
-  handleCategory: (category: string) => void;
-  handleNote: (note: string) => void;
   handleClose: () => void;
+  makeRequest: (notes: string) => Promise<void>
 }) {
-  const [category, setCategory] = useState("");
   const [notes, setNotes] = useState("");
-
-  function createSubmitForm(e: React.FormEvent<HTMLFormElement>) {
+  
+  async function handleSubmit(e: React.FormEvent<HTMLButtonElement>) {
     e.preventDefault();
-    handleCategory(category);
-    handleNote(notes);
-    handleClose();
+    handleLoading();
+    await makeRequest(notes);
   }
   
   return (
@@ -46,17 +42,9 @@ export default function Model({
               />
             </div>
             <form
-              onSubmit={createSubmitForm}
               id="flashcard-form"
               className="flex flex-col gap-3 mt-10 h-screen"
             >
-              <input
-                className="border p-2 outline-none text-black"
-                placeholder="Category"
-                form="flashcard-form" 
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              />
               <textarea
                 value={notes}
                 form="flashcard-form" 
@@ -64,7 +52,7 @@ export default function Model({
                 onChange={(e) => setNotes(e.target.value)}
                 className="h-full resize-none border p-2 outline-none text-black"
               />
-              <button disabled={loading} form="flashcard-form" className="bg-black p-3">
+              <button disabled={loading} onClick={handleSubmit} form="flashcard-form" className="border bg-black p-3 w-full">
                 {loading ? "Loading" : "Submit"}
               </button>
             </form>

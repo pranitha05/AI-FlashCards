@@ -1,5 +1,5 @@
 import { addDoc, collection, doc, getDoc, getDocs, WithFieldValue } from "firebase/firestore";
-import { firebase } from "../lib/firebase/firebase";
+import { firebase } from "../firebase";
 
 const userRef = collection(firebase, "users");
 const notesRef = (userId: string) => collection(firebase, `/users/${userId}/notes`);

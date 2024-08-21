@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUser } from "../../utils/functions";
+import { getUser } from "../../lib/firebase/utils/functions";
 import z from "zod";
 
 export async function POST(request: NextRequest, response: NextResponse) {

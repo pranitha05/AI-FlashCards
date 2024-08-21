@@ -116,11 +116,12 @@ export default function Page() {
                   {item.category}
                 </h1>
                 <button
-                  onClick={() => handleDelete(item.category, item)}
-                  className="text-white font-bold bg-red-600 p-2 rounded-lg shadow-lg hover:bg-red-700 transition duration-300"
-                >
-                  Delete
-                </button>
+                    onClick={() => handleDelete(item.category, item)}
+                    className="text-white font-bold bg-red-600 p-2 rounded-lg shadow-lg hover:bg-red-700 transition duration-300 mr-4"
+                  >
+                    Delete
+                  </button>
+
               </div>
               <div className="grid md:grid-cols-4 gap-6 mx-10 my-10">
                 {item.content.length > 0 &&

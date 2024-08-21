@@ -183,37 +183,41 @@ const Page: React.FC = () => {
 
       {/* Creators Section */}
       
-      <section className="relative bg-[url('/img/flashcardlogo.png')] bg-cover bg-center flex w-full flex-col items-center min-h-screen py-10 px-4">
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-60"></div>
+      <section className="relative bg-[url('/img/flashcardlogo.png')] bg-cover bg-center flex w-full flex-col items-center min-h-screen py-20 px-6">
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black opacity-60"></div>
 
-        <div className="relative z-10 flex flex-col items-center justify-center p-6 max-w-5xl mx-auto">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl text-white bg-clip-text text-transparent font-bold uppercase mb-8 shadow-lg text-center">Meet the Creators</h2>
+          <div className="relative z-10 flex flex-col items-center justify-center p-6 max-w-6xl mx-auto mt-32"> {/* Increased mt-32 for more spacing */}
+            <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-bold uppercase mb-16 text-center relative">
+              <span className="absolute inset-0 bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-blue-500">Meet the Creators</span>
+              <span className="relative z-10">Meet the Creators</span>
+            </h2>
 
-          <div className="flex flex-wrap gap-8 justify-center">
-            {/* Creator 1 */}
-            <div className="bg-white shadow-lg rounded-lg p-6 max-w-xs md:max-w-sm lg:max-w-md text-center">
-              <img src="/img/creator1.jpg" alt="Creator 1" className="w-32 h-32 object-cover rounded-full mx-auto mb-4"/>
-              <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-2">Minh Le</h3>
-              <p className="text-gray-600">Front-end Development</p>
-            </div>
+            <div className="flex flex-wrap gap-12 justify-center">
+              {/* Creator 1 */}
+              <div className="bg-white shadow-xl rounded-lg p-8 max-w-xs md:max-w-sm lg:max-w-md text-center transform transition-transform hover:scale-105">
+                <img src="/img/creator1.jpg" alt="Creator 1" className="w-36 h-36 object-cover rounded-full mx-auto mb-6"/>
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-3">Minh Le</h3>
+                <p className="text-gray-700 text-base">Front-end Development</p>
+              </div>
 
-            {/* Creator 2 */}
-            <div className="bg-white shadow-lg rounded-lg p-6 max-w-xs md:max-w-sm lg:max-w-md text-center">
-              <img src="/img/creator2.jpg" alt="Creator 2" className="w-32 h-32 object-cover rounded-full mx-auto mb-4"/>
-              <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-2">Pranitha Ramaswamy</h3>
-              <p className="text-gray-600">UI/UX Designer</p>
-            </div>
+              {/* Creator 2 */}
+              <div className="bg-white shadow-xl rounded-lg p-8 max-w-xs md:max-w-sm lg:max-w-md text-center transform transition-transform hover:scale-105">
+                <img src="/img/creator2.jpg" alt="Creator 2" className="w-36 h-36 object-cover rounded-full mx-auto mb-6"/>
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-3">Pranitha Ramaswamy</h3>
+                <p className="text-gray-700 text-base">UI/UX Designer</p>
+              </div>
 
-            {/* Creator 3 */}
-            <div className="bg-white shadow-lg rounded-lg p-6 max-w-xs md:max-w-sm lg:max-w-md text-center">
-              <img src="/img/creator4.png" alt="Creator 3" className="w-32 h-32 object-cover rounded-full mx-auto mb-4"/>
-              <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-2">Bi Rong Liu</h3>
-              <p className="text-gray-600">Automation & DevOps Engineer</p>
+              {/* Creator 3 */}
+              <div className="bg-white shadow-xl rounded-lg p-8 max-w-xs md:max-w-sm lg:max-w-md text-center transform transition-transform hover:scale-105">
+                <img src="/img/creator4.png" alt="Creator 3" className="w-36 h-36 object-cover rounded-full mx-auto mb-6"/>
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-3">Bi Rong Liu</h3>
+                <p className="text-gray-700 text-base">Automation & DevOps Engineer</p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+
 
 
         {/* Contact Section */}

@@ -25,7 +25,7 @@ export default function DeleteModel({
   async function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     if (select) {
-      data.content = data.content.filter((evt: Flashcard) => evt.question !== select);
+      data.flashcards = data.flashcards.filter((evt: Flashcard) => evt.question !== select);
       await updateFlashcard(userId, data.category, data);
       handleClose();
     }
@@ -45,7 +45,7 @@ export default function DeleteModel({
             <h1 className="text-2xl font-bold mb-4">{data.category}</h1>
             <h2 className="text-lg mb-4">Select which card to delete</h2>
             <div className="flex flex-col gap-2">
-              {data.content.map((evt: Flashcard) => (
+              {data.flashcards.map((evt: Flashcard) => (
                 <div
                   key={evt.question}
                   onClick={() => setSelect(evt.question)}

@@ -17,7 +17,7 @@ type Flashcard = {
 // Ensure this is in page.tsx
 export type FlashcardRaw = {
   category: string;
-  content: {
+  flashcards: {
     question: string;
     answer: string;
   }[];
@@ -116,7 +116,7 @@ export default function Page() {
                   {item.category}
                 </h1>
                 <button
-                    onClick={() => handleDelete(item.category, item)}
+                    onClick={() => handleDelete(item.category, { flashcards: item.content, category: item.category })}
                     className="text-white font-bold bg-red-600 p-2 rounded-lg shadow-lg hover:bg-red-700 transition duration-300 mr-4"
                   >
                     Delete
@@ -131,7 +131,7 @@ export default function Page() {
                       className="relative group rounded-lg bg-black h-40 justify-center flex items-center shadow-xl transform hover:scale-105 transition-transform duration-300"
                     >
                       <span className="text-white text-lg">{r.question}</span>
-                      <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute inset-0 bg-black p-10 bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <span className="text-white text-lg">{r.answer}</span>
                       </div>
                     </div>

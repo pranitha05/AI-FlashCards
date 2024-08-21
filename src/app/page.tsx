@@ -70,6 +70,8 @@ export default function Page() {
     setIsDeleteModel(true);
   };
 
+
+//cant figure out how to delete the whole flash card, need to figure it out 
   return (
     <main
       className={`bg-gradient-to-b from-blue-200 to-blue-500 min-h-screen flex flex-col justify-center items-center relative z-10`}

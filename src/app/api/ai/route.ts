@@ -46,6 +46,8 @@ export async function POST(request: NextRequest) {
     });
 
   const data = await response.json();
+  console.log(data)
+  if(!data) return  NextResponse.json({ statusCode: 500, message: null });
   const { finish_reason, message } = data.choices[0];
   if (finish_reason === "stop")
     return NextResponse.json({ statusCode: 200, message: message.content });

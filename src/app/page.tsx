@@ -46,7 +46,7 @@ export default function Page() {
   useEffect(() => {
     const res = async () => {
       const response = await getBatchNotes(userId as string);
-      setData(response.filter(res => res.flashcards));
+      setData(response.filter(res => res.flashcards).length > 0 ? [] : response);
     };
     res();
 
@@ -85,10 +85,10 @@ export default function Page() {
 
   function handleDelete(
     evt: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
-    data: FlashcardRaw
+    raw: FlashcardRaw
   ) {
     evt.preventDefault();
-    setSelectedData(data);
+    setSelectedData(raw);
     setisDeleteModelOpen(true);
     console.log(data);
   }
@@ -131,7 +131,7 @@ export default function Page() {
         </div>
       </div>
       <div>
-        {data.length > 0 ? (
+        {data.length ? (
           data.map((data) => {
             return (
               <div

@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function NewPage() {
   return (
-    <div className="relative h-screen w-full" style={{ backgroundColor: '#68c7ff' }}>
+    <div className="relative h-screen w-full" style={{ backgroundColor: '#0000' }}>
       {/* Top Right Corner - Navigation */}
       <div className="absolute top-4 right-4 flex space-x-8">
         <a href="/flashcards" className="text-[#df608f] text-[14px] font-poppins">

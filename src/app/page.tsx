@@ -1,9 +1,10 @@
-
 "use client";
 import { RedirectToSignIn, useSession } from "@clerk/nextjs";
 import { useState } from "react";
 import Model from "./components/Model";
+import DeleteModel from "./components/DeleteModel";
 import { createBatchNotes } from "./lib/firebase/utils/functions";
+
 
 type Flashcard = {
   category: string;
@@ -13,7 +14,8 @@ type Flashcard = {
   }[];
 }[];
 
-type FlashcardRaw = {
+// Ensure this is in page.tsx
+export type FlashcardRaw = {
   category: string;
   content: {
     question: string;
@@ -21,23 +23,17 @@ type FlashcardRaw = {
   }[];
 };
 
-const createFlashcard = async (data: FlashcardRaw, userId: string) => {
-  const ctx = await fetch("/api/flashcard", {
-    method: "POST",
-    body: JSON.stringify({
-      userId,
-      data: { category: data.category, content: data.content },
-    }),
-  });
-  const response = await ctx.json();
-  return response;
-};
+
 
 const defaultFlashCardData: Flashcard = [];
 export default function Page() {
   const { session, isSignedIn } = useSession();
-  const [isModel, setisModel] = useState(false);
+  const [isModel, setIsModel] = useState(false);
+  const [isDeleteModel, setIsDeleteModel] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedFlashcardData, setSelectedFlashcardData] = useState<FlashcardRaw | null>(null);
+
   const [data, setData] = useState<Flashcard>(defaultFlashCardData);
 
   if (!isSignedIn) return <RedirectToSignIn />;
@@ -59,70 +55,90 @@ export default function Page() {
     }
   }
 
-  const handleClose = () => setisModel(false);
+  const handleClose = () => setIsModel(false);
 
   const handleLoading = () => setLoading((prev) => !prev);
 
   async function handleButtonSubmit() {
-    setisModel((prev) => !prev);
+    setIsModel((prev) => !prev);
     setLoading(false);
   }
 
-  return (
-    <main className="relative bg-[url('/img/flashcardlogo.png')] flex flex-col justify-between items-center h-screen text-white">
-      {isModel && (
-        <Model
-          isOpen={isModel}
-          makeRequest={makeAIRequest}
-          handleClose={handleClose}
-          handleLoading={handleLoading}
-          loading={loading}
-        />
-      )}
+  const handleDelete = (category: string, flashcardData: FlashcardRaw) => {
+    setSelectedCategory(category);
+    setSelectedFlashcardData(flashcardData);
+    setIsDeleteModel(true);
+  };
 
-    <div className="mt-32 flex flex-col justify-center items-center p-6 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-opacity-80 rounded-lg shadow-lg mb-6 w-full max-w-md text-center">
-        <h1 className="text-3xl md:text-4xl font-extrabold uppercase mb-4">
+  return (
+    <main
+      className={`bg-gradient-to-b from-blue-200 to-blue-500 min-h-screen flex flex-col justify-center items-center relative z-10`}
+    >
+      <div className="text-center mt-20">
+        {isModel && (
+          <Model
+            isOpen={isModel}
+            makeRequest={makeAIRequest}
+            handleClose={handleClose}
+            handleLoading={handleLoading}
+            loading={loading}
+          />
+        )}
+        {isDeleteModel && selectedCategory && selectedFlashcardData && (
+          <DeleteModel
+            isOpen={isDeleteModel}
+            handleOpen={() => setIsDeleteModel(true)}
+            handleClose={() => setIsDeleteModel(false)}
+            data={selectedFlashcardData}
+            userId={session!.user.id}
+          />
+        )}
+        
+        <h1 className="text-3xl font-bold uppercase py-1 mb-4 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-md">
           Welcome back, {session.user.fullName}
         </h1>
         <button
           onClick={handleButtonSubmit}
-          className="bg-white text-blue-600 font-semibold text-lg md:text-xl py-3 px-6 rounded-lg shadow-md hover:bg-gray-100 transition duration-300"
+          className="text-white font-bold text-xl bg-gradient-to-r from-purple-500 to-indigo-600 p-4 rounded-lg shadow-lg hover:from-indigo-600 hover:to-purple-500 transition duration-300"
         >
           Create Flashcard
         </button>
       </div>
-
-      <div className="flex-grow w-full max-w-5xl p-4">
+      
+      <div className="flex-grow w-full">
         {data.length > 0 ? (
-          <div className="flex flex-col items-center">
-            {data.map((data) => (
-              <div
-                key={data.category}
-                className="w-full bg-white rounded-lg shadow-lg mb-8 p-4"
-              >
-                <h1 className="text-2xl font-bold mb-4 text-center uppercase">
-                  {data.category}
+          data.map((item) => (
+            <div key={item.category} className="flex justify-center my-10 flex-col">
+              <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-bold mx-10 uppercase text-white drop-shadow-lg">
+                  {item.category}
                 </h1>
-                <div className="grid md:grid-cols-4 gap-4">
-                  {data.content.length > 0 &&
-                    data.content.map((r) => (
-                      <div
-                        key={r.question}
-                        className="relative group rounded-lg bg-gray-800 text-white h-40 flex items-center justify-center overflow-hidden"
-                      >
-                        <span className="text-lg font-medium p-4">{r.question}</span>
-                        <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <span className="text-lg font-medium p-4">{r.answer}</span>
-                        </div>
-                      </div>
-                    ))}
-                </div>
+                <button
+                  onClick={() => handleDelete(item.category, item)}
+                  className="text-white font-bold bg-red-600 p-2 rounded-lg shadow-lg hover:bg-red-700 transition duration-300"
+                >
+                  Delete
+                </button>
               </div>
-            ))}
-          </div>
+              <div className="grid md:grid-cols-4 gap-6 mx-10 my-10">
+                {item.content.length > 0 &&
+                  item.content.map((r) => (
+                    <div
+                      key={r.question}
+                      className="relative group rounded-lg bg-black h-40 justify-center flex items-center shadow-xl transform hover:scale-105 transition-transform duration-300"
+                    >
+                      <span className="text-white text-lg">{r.question}</span>
+                      <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="text-white text-lg">{r.answer}</span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ))
         ) : (
-          <div className="h-full flex justify-center items-center text-gray-300 text-lg">
-            No flashcards
+          <div className="h-screen flex justify-center items-center">
+            <p className="text-white text-2xl font-bold">No flashcards available</p>
           </div>
         )}
       </div>

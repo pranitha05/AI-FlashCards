@@ -52,6 +52,7 @@ export async function createBatchNotes(
   return id;
 }
 
+
 export async function getBatchNotes(userId: string) {
   let result: (NoteType & { id: string })[] = [];
   const x = await getDocs(collection(firebase, "users", userId, "notes"));
